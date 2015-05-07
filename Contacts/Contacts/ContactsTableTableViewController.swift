@@ -17,6 +17,9 @@ class ContactsTableTableViewController: UITableViewController, UITableViewDelega
         let moveButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: Selector("toggleEdit"))
         self.navigationItem.leftBarButtonItem = moveButton
         
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: Selector("addContact"))
+        navigationItem.rightBarButtonItem = addButton
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.title = "Contacts"
@@ -27,6 +30,11 @@ class ContactsTableTableViewController: UITableViewController, UITableViewDelega
         self.contactList.append(jenny)
         self.contactList.append(rich)
         self.contactList.append(mindy)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,6 +88,13 @@ class ContactsTableTableViewController: UITableViewController, UITableViewDelega
     
     func toggleEdit() {
         self.tableView.setEditing(!self.tableView.editing, animated: true)
+    }
+    
+    func addContact() {
+        let newContact = Contact(name: "New Contact")
+        self.contactList.append(newContact)
+        let newIndexPath = NSIndexPath(forRow: self.contactList.count - 1, inSection: 0)
+        self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Automatic)
     }
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
